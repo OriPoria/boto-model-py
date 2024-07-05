@@ -38,3 +38,7 @@ response = boto3_client.get_api_name()
 response_object = ApiRequestNameResponse(**response)
 ```
 With the above syntax you have the full intellisense and type hint of the response instead python dictionary syntax
+### Flags
+- --with_metadata - By default, loading the response dictionary into the boto-model-py object does not include the 
+`response_metadata` attribute. With using this flag on running the transformation script, this attribute is included
+on loading the response into the boto-model-py object.
