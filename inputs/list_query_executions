@@ -1,0 +1,6 @@
+{
+    'QueryExecutionIds': [
+        'string',
+    ],
+    'NextToken': 'string'
+}

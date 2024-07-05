@@ -1,0 +1,39 @@
+{
+    'IsTruncated': True|False,
+    'ContinuationToken': 'string',
+    'NextContinuationToken': 'string',
+    'AnalyticsConfigurationList': [
+        {
+            'Id': 'string',
+            'Filter': {
+                'Prefix': 'string',
+                'Tag': {
+                    'Key': 'string',
+                    'Value': 'string'
+                },
+                'And': {
+                    'Prefix': 'string',
+                    'Tags': [
+                        {
+                            'Key': 'string',
+                            'Value': 'string'
+                        },
+                    ]
+                }
+            },
+            'StorageClassAnalysis': {
+                'DataExport': {
+                    'OutputSchemaVersion': 'V_1',
+                    'Destination': {
+                        'S3BucketDestination': {
+                            'Format': 'CSV',
+                            'BucketAccountId': 'string',
+                            'Bucket': 'string',
+                            'Prefix': 'string'
+                        }
+                    }
+                }
+            }
+        },
+    ]
+}

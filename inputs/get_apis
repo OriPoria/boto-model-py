@@ -1,0 +1,44 @@
+{
+    'Items': [
+        {
+            'ApiEndpoint': 'string',
+            'ApiGatewayManaged': True|False,
+            'ApiId': 'string',
+            'ApiKeySelectionExpression': 'string',
+            'CorsConfiguration': {
+                'AllowCredentials': True|False,
+                'AllowHeaders': [
+                    'string',
+                ],
+                'AllowMethods': [
+                    'string',
+                ],
+                'AllowOrigins': [
+                    'string',
+                ],
+                'ExposeHeaders': [
+                    'string',
+                ],
+                'MaxAge': 123
+            },
+            'CreatedDate': datetime(2015, 1, 1),
+            'Description': 'string',
+            'DisableSchemaValidation': True|False,
+            'DisableExecuteApiEndpoint': True|False,
+            'ImportInfo': [
+                'string',
+            ],
+            'Name': 'string',
+            'ProtocolType': 'WEBSOCKET'|'HTTP',
+            'RouteSelectionExpression': 'string',
+            'Tags': {
+                'string': 'string'
+            },
+            'Version': 'string',
+            'Warnings': [
+                'string',
+            ]
+        },
+    ],
+    'NextToken': 'string'
+}
