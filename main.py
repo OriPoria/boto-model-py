@@ -1,5 +1,4 @@
 import os
-import re
 import json
 import argparse
 import subprocess
@@ -7,18 +6,10 @@ import ast
 import astor
 
 from enum_writer import enum_classes_to_replace
-
+from preprocessing import preprocess_input
 
 DIST_FOLDER = "dist"
 
-
-def replace_one_quote_dict_to_json(string: str) -> str:
-    replaced = re.sub(r"'", '"', string)
-    return replaced
-
-def remove_white_spaces(string: str) -> str:
-    clean_str = re.sub(r'\s+', '', string)
-    return clean_str
 
 
 LINE_OF_BOOLEAN_PREFIX = "BOOL_LINE_NUMBER"
@@ -26,100 +17,6 @@ LINE_OF_ENUM_PREFIX = "ENUM_LINE_NUMBER"
 LINE_OF_DATETIME_PREFIX = "DATETIME_LINE_NUMBER"
 
 
-def list_keys_of_boolean(string: str) -> list[str]:
-    lines = string.split("\n")
-    line_number_with_boolean = list()
-    for i, l in enumerate(lines):
-        if "True|False" in l:
-            line_number_with_boolean.append(f"{LINE_OF_BOOLEAN_PREFIX}_{i}")
-    return line_number_with_boolean
-
-def list_keys_of_datetime(string: str) -> list[str]:
-    lines = string.split("\n")
-    line_number_with_boolean = list()
-    for i, l in enumerate(lines):
-        if "datetime(" in l:
-            line_number_with_boolean.append(f"{LINE_OF_DATETIME_PREFIX}_{i}")
-    return line_number_with_boolean
-
-
-def list_keys_with_enum(string: str) -> list[str]:
-    lines = string.split("\n")
-    line_number_with_enum = list()
-    for i, l in enumerate(lines):
-        l.rstrip(",")
-        enum_token = l.rstrip(",").split("|")
-        pattern = r'^".*"$' # ^- start string, $- end of string
-        if len(enum_token) > 1 and bool(re.match(pattern, enum_token[-1])):
-            line_number_with_enum.append(f"{LINE_OF_ENUM_PREFIX}_{i}")
-    return line_number_with_enum
-
-
-def generate_enum_dicts(string: str, line_numbers_of_enums: set[int]):
-    lines = string.split("\n")
-    enums_dicts = list()
-    for i, l in enumerate(lines):
-        if i in line_numbers_of_enums:
-            line_of_enum_splitted = l.strip(",").split(": ")
-            assert len(line_of_enum_splitted) == 2
-            part_of_value = line_of_enum_splitted[1]
-            part_of_key = line_of_enum_splitted[0].strip(" ").strip('"')
-            enum_values = part_of_value.split("|")
-            dict_ = dict()
-            for enum_value in enum_values:
-                dict_[enum_value.upper().replace("-", "_").strip('"')] = enum_value
-            enums_dicts.append((part_of_key, dict_))
-    return enums_dicts
-
-def replace_line_of_enums(string: str, line_of_enums: list[str]) -> tuple[str, dict]:
-    lines = string.split("\n")
-    line_numbers = {int(i.split("_")[-1]) for i in line_of_enums}
-    enum_map_from_line_number_to_list_of_strings = dict()
-    for i, l in enumerate(lines):
-        if i in line_numbers:
-            line_of_enum_splitted = l.strip(",").split(": ")
-            assert len(line_of_enum_splitted) == 2
-            part_of_value = line_of_enum_splitted[1]
-            list_of_values = part_of_value.split("|")
-            enum_map_from_line_number_to_list_of_strings[i] = [v.strip("\"") for v in list_of_values]
-            string = string.replace(part_of_value, f"\"{LINE_OF_ENUM_PREFIX}_{i}\"", 1)
-    return string, enum_map_from_line_number_to_list_of_strings
-
-
-def replace_line_of_boolean(string: str, line_of_bool: list[str]) -> str:
-    lines = string.split("\n")
-    line_numbers = {int(i.split("_")[-1]) for i in line_of_bool}
-    line_numbers = sorted(line_numbers)
-    for i, l in enumerate(lines):
-        if i in line_numbers:
-            full_line = l
-            line_of_bool_splitted = l.strip(",").split(": ")
-            assert len(line_of_bool_splitted) == 2
-            part_of_value = line_of_bool_splitted[1]
-            full_line_replaced = full_line.replace(part_of_value, f"\"{LINE_OF_BOOLEAN_PREFIX}_{i}\"")
-            string = string.replace(full_line, full_line_replaced, 1)
-    return string
-
-
-def replace_line_of_datetime(string: str, line_of_datetime: list[str]) -> str:
-    lines = string.split("\n")
-    line_numbers = {int(i.split("_")[-1]) for i in line_of_datetime}
-    for i, l in enumerate(lines):
-        if i in line_numbers:
-            full_line = l
-            line_of_enum_splitted = l.strip(",").split(": ")
-            assert len(line_of_enum_splitted) == 2
-            part_of_value = line_of_enum_splitted[1]
-            full_line_replaced = full_line.replace(part_of_value, f"\"{LINE_OF_DATETIME_PREFIX}_{i}\"")
-            string = string.replace(full_line, full_line_replaced, 1)
-    return string
-
-
-def remove_unquoted_commas(text):
-    pattern = re.compile(r'(?<!"),(?!")')
-    text = text.replace("\",]", "\"]")
-    text = pattern.sub('', text)
-    return text
 
 
 def find_path(dict_, value, path=None):
@@ -188,19 +85,7 @@ if __name__ == "__main__":
     with open(file_path) as f:
         s_ = f.read()
     file_name = os.path.basename(file_path)
-
-    s_ = replace_one_quote_dict_to_json(s_)
-    lkod = list_keys_of_datetime(s_)
-    lkob = list_keys_of_boolean(s_)
-    lkwe = list_keys_with_enum(s_)
-
-    enum_dict = generate_enum_dicts(s_, {int(it.split("_")[-1]) for it in lkwe})
-    s_, map_from_line_of_enum_to_list_of_values = replace_line_of_enums(s_, lkwe)
-    s_ = replace_line_of_boolean(s_, lkob)
-    s_ = replace_line_of_datetime(s_, lkod)
-    s_ = remove_white_spaces(s_)
-    s_ = remove_unquoted_commas(s_)
-    dict_json = json.loads(s_)
+    dict_json, lkod, lkob, lkwe, enum_dict, map_from_line_of_enum_to_list_of_values = preprocess_input(s_)
     map_from_value_of_temp_bool_to_list_of_path = find_all_path_to_value(dict_json, lkob)
     map_from_value_of_temp_enum_to_list_of_path = find_all_path_to_value(dict_json, lkwe)
     map_from_value_of_temp_datetime_to_list_of_path = find_all_path_to_value(dict_json, lkod)
