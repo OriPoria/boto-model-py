@@ -16,7 +16,7 @@ pip install -r requirements.txt
 ```
 ## How to use
 The main transformation script relies on responses syntax from boto3 documentation website.
-- Link: `https://boto3.amazonaws.com/v1/documentation/api/latest/reference/services/index.html`
+- Link: [boto3 API services](https://boto3.amazonaws.com/v1/documentation/api/latest/reference/services/index.html)
 1. Choose from boto3 website the API you want to use and copy its `response syntax` dictionary syntax
 2. Create under `inputs` folder new file named with the name of the API request
 ```shell
