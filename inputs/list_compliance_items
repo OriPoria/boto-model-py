@@ -1,0 +1,22 @@
+{
+    'ComplianceItems': [
+        {
+            'ComplianceType': 'string',
+            'ResourceType': 'string',
+            'ResourceId': 'string',
+            'Id': 'string',
+            'Title': 'string',
+            'Status': 'COMPLIANT'|'NON_COMPLIANT',
+            'Severity': 'CRITICAL'|'HIGH'|'MEDIUM'|'LOW'|'INFORMATIONAL'|'UNSPECIFIED',
+            'ExecutionSummary': {
+                'ExecutionTime': datetime(2015, 1, 1),
+                'ExecutionId': 'string',
+                'ExecutionType': 'string'
+            },
+            'Details': {
+                'string': 'string'
+            }
+        },
+    ],
+    'NextToken': 'string'
+}

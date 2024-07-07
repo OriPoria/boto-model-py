@@ -1,0 +1,23 @@
+{
+    'InstanceAssociationStatusInfos': [
+        {
+            'AssociationId': 'string',
+            'Name': 'string',
+            'DocumentVersion': 'string',
+            'AssociationVersion': 'string',
+            'InstanceId': 'string',
+            'ExecutionDate': datetime(2015, 1, 1),
+            'Status': 'string',
+            'DetailedStatus': 'string',
+            'ExecutionSummary': 'string',
+            'ErrorCode': 'string',
+            'OutputUrl': {
+                'S3OutputUrl': {
+                    'OutputUrl': 'string'
+                }
+            },
+            'AssociationName': 'string'
+        },
+    ],
+    'NextToken': 'string'
+}
