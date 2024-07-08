@@ -1,0 +1,13 @@
+README.md
+pyproject.toml
+src/boto_model_py/base_response.py
+src/boto_model_py/cli.py
+src/boto_model_py/enum_writer.py
+src/boto_model_py/preprocessing.py
+src/boto_model_py/run.py
+src/boto_model_py.egg-info/PKG-INFO
+src/boto_model_py.egg-info/SOURCES.txt
+src/boto_model_py.egg-info/dependency_links.txt
+src/boto_model_py.egg-info/entry_points.txt
+src/boto_model_py.egg-info/requires.txt
+src/boto_model_py.egg-info/top_level.txt

@@ -1,3 +1,4 @@
+base_response_code = """
 from pydantic import BaseModel
 from typing import Dict, Any
 
@@ -12,3 +13,4 @@ class BaseResponse(BaseModel):
 
         # Call the parent __init__ method with the initialized data
         super().__init__(**init_data)
+"""

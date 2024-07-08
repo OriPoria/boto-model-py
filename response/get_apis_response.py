@@ -4,8 +4,8 @@ from datetime import datetime
 
 
 class ProtocolType(Enum):
-    W_E_B_S_O_C_K_E_T = 'WEBSOCKET'
-    H_T_T_P = 'HTTP'
+    WEBSOCKET = 'WEBSOCKET'
+    HTTP = 'HTTP'
 
 
 from typing import Dict, Any

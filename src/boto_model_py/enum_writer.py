@@ -26,21 +26,24 @@ def get_enum_class_name(dict_json: dict, enum_line_number: str) -> Optional[str]
                         return k + result
                     return result
 
-def camel_to_upper_underscore(camel_str):
-    # Use a regular expression to find the positions to insert underscores
-    underscore_str = re.sub(r'(?<!^)(?=[A-Z])', '_', camel_str)
-    # Convert the resulting string to upper case
-    upper_str = underscore_str.upper()
-    upper_str = upper_str.replace(".", "")
-    upper_str = upper_str.replace("-", "")
+def generate_enum_var_name(camel_str: str) -> str:
+    if all([c.isupper() for c in camel_str]):
+        return camel_str
+    else:
+        # Use a regular expression to find the positions to insert underscores
+        underscore_str = re.sub(r'(?<!^)(?=[A-Z])', '_', camel_str)
+        # Convert the resulting string to upper case
+        upper_str = underscore_str.upper()
+        upper_str = upper_str.replace(".", "")
+        upper_str = upper_str.replace("-", "")
 
-    return upper_str
+        return upper_str
 
 
 def write_enum_class(class_name: str, attrs: list[str]) -> str:
     class_str = f"class {class_name}(Enum):\n"
     for a in attrs:
-        class_str += f"\t{camel_to_upper_underscore(a)} = \"{a}\"\n"
+        class_str += f"\t{generate_enum_var_name(a)} = \"{a}\"\n"
     return class_str
 
 

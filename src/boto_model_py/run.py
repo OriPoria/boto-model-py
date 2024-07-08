@@ -1,23 +1,16 @@
 import os
 import json
-import argparse
 import subprocess
 import ast
 import astor
 
-from enum_writer import enum_classes_to_replace
-from preprocessing import preprocess_input
-
-DIST_FOLDER = "dist"
-
-
+from boto_model_py.enum_writer import enum_classes_to_replace
+from boto_model_py.preprocessing import preprocess_input
+from boto_model_py.base_response import base_response_code
 
 LINE_OF_BOOLEAN_PREFIX = "BOOL_LINE_NUMBER"
 LINE_OF_ENUM_PREFIX = "ENUM_LINE_NUMBER"
 LINE_OF_DATETIME_PREFIX = "DATETIME_LINE_NUMBER"
-
-
-
 
 def find_path(dict_, value, path=None):
     # TODO: change parameter name to input, not necessarily be a dict as termination
@@ -49,7 +42,7 @@ def find_all_path_to_value(dict_json_: dict, list_of_values_in_json: list[str]) 
     return result
 
 
-def change_ast_field_type(ast_object_, dict_of_values: dict, actual_type: str):
+def change_ast_field_type(ast_object_, dict_of_values: dict, actual_type: str, main_class_name: str):
     for list_of_path in dict_of_values.values():
         next_class = main_class_name
         list_of_path.insert(0, main_class_name)
@@ -71,17 +64,8 @@ def change_ast_field_type(ast_object_, dict_of_values: dict, actual_type: str):
                                 class_body_item.annotation.slice.id = actual_type
 
 
-if __name__ == "__main__":
+def run_transformation(file_path: str, output_path: str, with_metadata: bool = False):
 
-    parser = argparse.ArgumentParser(description="Generate pydantic base model from boto3 response format")
-
-    # Add arguments
-    parser.add_argument('file_path', type=str, help='The path of the file definition')
-    parser.add_argument('--with_metadata', action='store_true', help='Add response metadata to object')
-
-    args = parser.parse_args()
-
-    file_path = args.file_path
     with open(file_path) as f:
         s_ = f.read()
     file_name = os.path.basename(file_path)
@@ -96,7 +80,7 @@ if __name__ == "__main__":
     enum_classes_ast, enum_class_names = enum_classes_to_replace(dict_json, map_from_value_of_temp_enum_to_list_of_path, map_from_line_of_enum_to_list_of_values)
     ###### End process of json
 
-    module_path = os.path.join(DIST_FOLDER, f"{file_name}_response.py")
+    module_path = os.path.join(output_path, f"{file_name}_response.py")
     # Example command
     main_class_name = f"{file_name.title().replace('_', '')}Response"
     command = f"datamodel-codegen --input {temp_json_path} --output {module_path} --force-optional --class-name {main_class_name}"
@@ -110,9 +94,6 @@ if __name__ == "__main__":
     source_code = source_code.replace(" = None", "")
     source_code = source_code.replace("(BaseModel):", "(BaseResponse):")
 
-
-    with open("base_response.py", 'r', encoding='utf-8') as file:
-        base_response_code = file.read()
     base_response_code_ast = ast.parse(base_response_code).body
     ast_object = ast.parse(source_code)
 
@@ -129,12 +110,12 @@ if __name__ == "__main__":
     for e_c in enum_classes_ast:
         ast_object.body.insert(3, e_c)
 
-    change_ast_field_type(ast_object, map_from_value_of_temp_datetime_to_list_of_path, "datetime")
-    change_ast_field_type(ast_object, map_from_value_of_temp_bool_to_list_of_path, "bool")
+    change_ast_field_type(ast_object, map_from_value_of_temp_datetime_to_list_of_path, "datetime", main_class_name)
+    change_ast_field_type(ast_object, map_from_value_of_temp_bool_to_list_of_path, "bool", main_class_name)
     for enums_name_to_path in enum_class_names:
-        change_ast_field_type(ast_object, enums_name_to_path, list(enums_name_to_path.keys())[0])
+        change_ast_field_type(ast_object, enums_name_to_path, list(enums_name_to_path.keys())[0], main_class_name)
 
-    if args.with_metadata:
+    if with_metadata:
         for node in ast.walk(ast_object):
             if isinstance(node, ast.ClassDef) and node.name == main_class_name:
 

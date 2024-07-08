@@ -1,2 +1,5 @@
-delete_outputs:
-	rm *_output.py
+build:
+	python -m build
+
+test:
+	python -m pytest ./tests

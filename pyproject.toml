@@ -1,0 +1,30 @@
+[build-system]
+requires = ["setuptools>=61.0"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "boto-model-py"
+version = "0.0.1"
+description = "Code generator package to auto convert boto3 response syntax into pydantic base model class full hierarchy"
+readme = "README.md"
+requires-python = ">=3.9"
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "Operating System :: OS Independent",
+]
+dependencies = [
+    'pydantic==2.7.4',
+    'astor==0.8.1',
+    'datamodel-code-generator==0.25.7'
+]
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.pytest.ini_options]
+pythonpath = [
+  "src"
+]
+
+[project.scripts]
+bmpy = "boto_model_py.cli:main"
