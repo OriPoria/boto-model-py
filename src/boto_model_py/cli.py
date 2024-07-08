@@ -15,8 +15,7 @@ def main():
     file_path = args.file_path
     output_path = args.output_path
     with_metadata = args.with_metadata
-    print(type(with_metadata))
-    run_transformation(file_path=file_path, output_path=output_path)
+    run_transformation(file_path=file_path, output_path=output_path, with_metadata=with_metadata)
 
 
 if __name__ == "__main__":
