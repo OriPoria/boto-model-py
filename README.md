@@ -17,7 +17,7 @@ The main transformation script relies on responses syntax from boto3 documentati
 2. Run cli command to transform local copy of the `response syntax` from boto3 into base model classes using `bmpy` command
 The command has 2 main parameters:
    1. file_path: path to local `response syntax` file
-   2. output_path: output file path location. The output file=the response module is the base model classes full hierarchy
+   2. output_path: path to folder where output module is created - the response module location
    3. with_metadata: flag to indicate whether to include the response metadata in the base class or not 
 ```shell
 bmpy <file_path> <output_path>
@@ -55,8 +55,8 @@ intput file:
 ```shell
 bmpy input response
 ```
-5. The response model is generated with base class called `ListBucketsResponse` and I can import it in my project, and
-load the response into the base class. Then using all pydantic base class feature is easy.
+5. The response module is under generated under the `output_path` folder, with the with a class called `ListBucketsResponse`. 
+You can import it in the project, and load the response into the base class. Then using all pydantic base class feature is easy.
 ```python
 import boto3
 
