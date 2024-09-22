@@ -1,0 +1,14 @@
+{
+    'Accounts': [
+        {
+            'Id': 'string',
+            'Arn': 'string',
+            'Email': 'string',
+            'Name': 'string',
+            'Status': 'ACTIVE'|'SUSPENDED'|'PENDING_CLOSURE',
+            'JoinedMethod': 'INVITED'|'CREATED',
+            'JoinedTimestamp': datetime(2015, 1, 1)
+        },
+    ],
+    'NextToken': 'string'
+}

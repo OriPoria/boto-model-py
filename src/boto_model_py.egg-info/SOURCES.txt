@@ -1,5 +1,6 @@
 README.md
 pyproject.toml
+src/boto_model_py/__init__.py
 src/boto_model_py/base_response.py
 src/boto_model_py/cli.py
 src/boto_model_py/enum_writer.py

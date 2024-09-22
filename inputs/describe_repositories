@@ -1,0 +1,20 @@
+{
+    'repositories': [
+        {
+            'repositoryArn': 'string',
+            'registryId': 'string',
+            'repositoryName': 'string',
+            'repositoryUri': 'string',
+            'createdAt': datetime(2015, 1, 1),
+            'imageTagMutability': 'MUTABLE'|'IMMUTABLE',
+            'imageScanningConfiguration': {
+                'scanOnPush': True|False
+            },
+            'encryptionConfiguration': {
+                'encryptionType': 'AES256'|'KMS',
+                'kmsKey': 'string'
+            }
+        },
+    ],
+    'nextToken': 'string'
+}

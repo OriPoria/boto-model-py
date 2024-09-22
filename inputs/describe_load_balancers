@@ -1,0 +1,40 @@
+{
+    'LoadBalancers': [
+        {
+            'LoadBalancerArn': 'string',
+            'DNSName': 'string',
+            'CanonicalHostedZoneId': 'string',
+            'CreatedTime': datetime(2015, 1, 1),
+            'LoadBalancerName': 'string',
+            'Scheme': 'internet-facing'|'internal',
+            'VpcId': 'string',
+            'State': {
+                'Code': 'active'|'provisioning'|'active_impaired'|'failed',
+                'Reason': 'string'
+            },
+            'Type': 'application'|'network'|'gateway',
+            'AvailabilityZones': [
+                {
+                    'ZoneName': 'string',
+                    'SubnetId': 'string',
+                    'OutpostId': 'string',
+                    'LoadBalancerAddresses': [
+                        {
+                            'IpAddress': 'string',
+                            'AllocationId': 'string',
+                            'PrivateIPv4Address': 'string',
+                            'IPv6Address': 'string'
+                        },
+                    ]
+                },
+            ],
+            'SecurityGroups': [
+                'string',
+            ],
+            'IpAddressType': 'ipv4'|'dualstack'|'dualstack-without-public-ipv4',
+            'CustomerOwnedIpv4Pool': 'string',
+            'EnforceSecurityGroupInboundRulesOnPrivateLinkTraffic': 'string'
+        },
+    ],
+    'NextMarker': 'string'
+}

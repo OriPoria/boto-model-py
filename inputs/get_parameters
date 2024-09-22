@@ -1,0 +1,18 @@
+{
+    'Parameters': [
+        {
+            'Name': 'string',
+            'Type': 'String'|'StringList'|'SecureString',
+            'Value': 'string',
+            'Version': 123,
+            'Selector': 'string',
+            'SourceResult': 'string',
+            'LastModifiedDate': datetime(2015, 1, 1),
+            'ARN': 'string',
+            'DataType': 'string'
+        },
+    ],
+    'InvalidParameters': [
+        'string',
+    ]
+}

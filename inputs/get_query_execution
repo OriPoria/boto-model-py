@@ -1,0 +1,67 @@
+{
+    'QueryExecution': {
+        'QueryExecutionId': 'string',
+        'Query': 'string',
+        'StatementType': 'DDL'|'DML'|'UTILITY',
+        'ResultConfiguration': {
+            'OutputLocation': 'string',
+            'EncryptionConfiguration': {
+                'EncryptionOption': 'SSE_S3'|'SSE_KMS'|'CSE_KMS',
+                'KmsKey': 'string'
+            },
+            'ExpectedBucketOwner': 'string',
+            'AclConfiguration': {
+                'S3AclOption': 'BUCKET_OWNER_FULL_CONTROL'
+            }
+        },
+        'ResultReuseConfiguration': {
+            'ResultReuseByAgeConfiguration': {
+                'Enabled': True|False,
+                'MaxAgeInMinutes': 123
+            }
+        },
+        'QueryExecutionContext': {
+            'Database': 'string',
+            'Catalog': 'string'
+        },
+        'Status': {
+            'State': 'QUEUED'|'RUNNING'|'SUCCEEDED'|'FAILED'|'CANCELLED',
+            'StateChangeReason': 'string',
+            'SubmissionDateTime': datetime(2015, 1, 1),
+            'CompletionDateTime': datetime(2015, 1, 1),
+            'AthenaError': {
+                'ErrorCategory': 123,
+                'ErrorType': 123,
+                'Retryable': True|False,
+                'ErrorMessage': 'string'
+            }
+        },
+        'Statistics': {
+            'EngineExecutionTimeInMillis': 123,
+            'DataScannedInBytes': 123,
+            'DataManifestLocation': 'string',
+            'TotalExecutionTimeInMillis': 123,
+            'QueryQueueTimeInMillis': 123,
+            'ServicePreProcessingTimeInMillis': 123,
+            'QueryPlanningTimeInMillis': 123,
+            'ServiceProcessingTimeInMillis': 123,
+            'ResultReuseInformation': {
+                'ReusedPreviousResult': True|False
+            }
+        },
+        'WorkGroup': 'string',
+        'EngineVersion': {
+            'SelectedEngineVersion': 'string',
+            'EffectiveEngineVersion': 'string'
+        },
+        'ExecutionParameters': [
+            'string',
+        ],
+        'SubstatementType': 'string',
+        'QueryResultsS3AccessGrantsConfiguration': {
+            'EnableS3AccessGrants': True|False,
+            'CreateUserLevelPrefix': True|False,
+            'AuthenticationType': 'DIRECTORY_IDENTITY'
+        }
+    }
+}

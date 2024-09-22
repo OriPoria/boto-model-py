@@ -1,0 +1,7 @@
+{
+    'StatusCode': 123,
+    'FunctionError': 'string',
+    'LogResult': 'string',
+    'Payload': StreamingBody(),
+    'ExecutedVersion': 'string'
+}

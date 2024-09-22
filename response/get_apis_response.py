@@ -15,7 +15,7 @@ from pydantic import BaseModel
 class BaseResponse(BaseModel):
 
     def __init__(self, **data: Dict[str, Any]):
-        fields = self.__fields__.keys()
+        fields = self.model_fields.keys()
         init_data = {field: data.get(field, None) for field in fields}
         super().__init__(**init_data)
 

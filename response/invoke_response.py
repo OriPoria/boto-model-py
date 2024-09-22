@@ -1,5 +1,4 @@
 from __future__ import annotations
-from datetime import datetime
 from typing import Dict, Any
 from pydantic import BaseModel
 
@@ -12,20 +11,13 @@ class BaseResponse(BaseModel):
         super().__init__(**init_data)
 
 
-from typing import List, Optional
+from typing import Optional
 from pydantic import BaseModel
 
 
-class Bucket(BaseResponse):
-    Name: Optional[str]
-    CreationDate: Optional[datetime]
-
-
-class Owner(BaseResponse):
-    DisplayName: Optional[str]
-    ID: Optional[str]
-
-
-class ListBucketsResponse(BaseResponse):
-    Buckets: Optional[List[Bucket]]
-    Owner: Optional[Owner]
+class InvokeResponse(BaseResponse):
+    StatusCode: Optional[int]
+    FunctionError: Optional[str]
+    LogResult: Optional[str]
+    Payload: Optional[str]
+    ExecutedVersion: Optional[str]

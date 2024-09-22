@@ -1,0 +1,44 @@
+{
+    'ConfigRules': [
+        {
+            'ConfigRuleName': 'string',
+            'ConfigRuleArn': 'string',
+            'ConfigRuleId': 'string',
+            'Description': 'string',
+            'Scope': {
+                'ComplianceResourceTypes': [
+                    'string',
+                ],
+                'TagKey': 'string',
+                'TagValue': 'string',
+                'ComplianceResourceId': 'string'
+            },
+            'Source': {
+                'Owner': 'CUSTOM_LAMBDA'|'AWS'|'CUSTOM_POLICY',
+                'SourceIdentifier': 'string',
+                'SourceDetails': [
+                    {
+                        'EventSource': 'aws.config',
+                        'MessageType': 'ConfigurationItemChangeNotification'|'ConfigurationSnapshotDeliveryCompleted'|'ScheduledNotification'|'OversizedConfigurationItemChangeNotification',
+                        'MaximumExecutionFrequency': 'One_Hour'|'Three_Hours'|'Six_Hours'|'Twelve_Hours'|'TwentyFour_Hours'
+                    },
+                ],
+                'CustomPolicyDetails': {
+                    'PolicyRuntime': 'string',
+                    'PolicyText': 'string',
+                    'EnableDebugLogDelivery': True|False
+                }
+            },
+            'InputParameters': 'string',
+            'MaximumExecutionFrequency': 'One_Hour'|'Three_Hours'|'Six_Hours'|'Twelve_Hours'|'TwentyFour_Hours',
+            'ConfigRuleState': 'ACTIVE'|'DELETING'|'DELETING_RESULTS'|'EVALUATING',
+            'CreatedBy': 'string',
+            'EvaluationModes': [
+                {
+                    'Mode': 'DETECTIVE'|'PROACTIVE'
+                },
+            ]
+        },
+    ],
+    'NextToken': 'string'
+}

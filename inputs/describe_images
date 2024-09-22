@@ -1,0 +1,29 @@
+{
+    'imageDetails': [
+        {
+            'registryId': 'string',
+            'repositoryName': 'string',
+            'imageDigest': 'string',
+            'imageTags': [
+                'string',
+            ],
+            'imageSizeInBytes': 123,
+            'imagePushedAt': datetime(2015, 1, 1),
+            'imageScanStatus': {
+                'status': 'IN_PROGRESS'|'COMPLETE'|'FAILED'|'UNSUPPORTED_IMAGE'|'ACTIVE'|'PENDING'|'SCAN_ELIGIBILITY_EXPIRED'|'FINDINGS_UNAVAILABLE',
+                'description': 'string'
+            },
+            'imageScanFindingsSummary': {
+                'imageScanCompletedAt': datetime(2015, 1, 1),
+                'vulnerabilitySourceUpdatedAt': datetime(2015, 1, 1),
+                'findingSeverityCounts': {
+                    'string': 123
+                }
+            },
+            'imageManifestMediaType': 'string',
+            'artifactMediaType': 'string',
+            'lastRecordedPullTime': datetime(2015, 1, 1)
+        },
+    ],
+    'nextToken': 'string'
+}

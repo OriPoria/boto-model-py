@@ -1,0 +1,117 @@
+{
+    'Configuration': {
+        'FunctionName': 'string',
+        'FunctionArn': 'string',
+        'Runtime': 'nodejs'|'nodejs4.3'|'nodejs6.10'|'nodejs8.10'|'nodejs10.x'|'nodejs12.x'|'nodejs14.x'|'nodejs16.x'|'java8'|'java8.al2'|'java11'|'python2.7'|'python3.6'|'python3.7'|'python3.8'|'python3.9'|'dotnetcore1.0'|'dotnetcore2.0'|'dotnetcore2.1'|'dotnetcore3.1'|'dotnet6'|'dotnet8'|'nodejs4.3-edge'|'go1.x'|'ruby2.5'|'ruby2.7'|'provided'|'provided.al2'|'nodejs18.x'|'python3.10'|'java17'|'ruby3.2'|'ruby3.3'|'python3.11'|'nodejs20.x'|'provided.al2023'|'python3.12'|'java21',
+        'Role': 'string',
+        'Handler': 'string',
+        'CodeSize': 123,
+        'Description': 'string',
+        'Timeout': 123,
+        'MemorySize': 123,
+        'LastModified': 'string',
+        'CodeSha256': 'string',
+        'Version': 'string',
+        'VpcConfig': {
+            'SubnetIds': [
+                'string',
+            ],
+            'SecurityGroupIds': [
+                'string',
+            ],
+            'VpcId': 'string',
+            'Ipv6AllowedForDualStack': True|False
+        },
+        'DeadLetterConfig': {
+            'TargetArn': 'string'
+        },
+        'Environment': {
+            'Variables': {
+                'string': 'string'
+            },
+            'Error': {
+                'ErrorCode': 'string',
+                'Message': 'string'
+            }
+        },
+        'KMSKeyArn': 'string',
+        'TracingConfig': {
+            'Mode': 'Active'|'PassThrough'
+        },
+        'MasterArn': 'string',
+        'RevisionId': 'string',
+        'Layers': [
+            {
+                'Arn': 'string',
+                'CodeSize': 123,
+                'SigningProfileVersionArn': 'string',
+                'SigningJobArn': 'string'
+            },
+        ],
+        'State': 'Pending'|'Active'|'Inactive'|'Failed',
+        'StateReason': 'string',
+        'StateReasonCode': 'Idle'|'Creating'|'Restoring'|'EniLimitExceeded'|'InsufficientRolePermissions'|'InvalidConfiguration'|'InternalError'|'SubnetOutOfIPAddresses'|'InvalidSubnet'|'InvalidSecurityGroup'|'ImageDeleted'|'ImageAccessDenied'|'InvalidImage'|'KMSKeyAccessDenied'|'KMSKeyNotFound'|'InvalidStateKMSKey'|'DisabledKMSKey'|'EFSIOError'|'EFSMountConnectivityError'|'EFSMountFailure'|'EFSMountTimeout'|'InvalidRuntime'|'InvalidZipFileException'|'FunctionError',
+        'LastUpdateStatus': 'Successful'|'Failed'|'InProgress',
+        'LastUpdateStatusReason': 'string',
+        'LastUpdateStatusReasonCode': 'EniLimitExceeded'|'InsufficientRolePermissions'|'InvalidConfiguration'|'InternalError'|'SubnetOutOfIPAddresses'|'InvalidSubnet'|'InvalidSecurityGroup'|'ImageDeleted'|'ImageAccessDenied'|'InvalidImage'|'KMSKeyAccessDenied'|'KMSKeyNotFound'|'InvalidStateKMSKey'|'DisabledKMSKey'|'EFSIOError'|'EFSMountConnectivityError'|'EFSMountFailure'|'EFSMountTimeout'|'InvalidRuntime'|'InvalidZipFileException'|'FunctionError',
+        'FileSystemConfigs': [
+            {
+                'Arn': 'string',
+                'LocalMountPath': 'string'
+            },
+        ],
+        'PackageType': 'Zip'|'Image',
+        'ImageConfigResponse': {
+            'ImageConfig': {
+                'EntryPoint': [
+                    'string',
+                ],
+                'Command': [
+                    'string',
+                ],
+                'WorkingDirectory': 'string'
+            },
+            'Error': {
+                'ErrorCode': 'string',
+                'Message': 'string'
+            }
+        },
+        'SigningProfileVersionArn': 'string',
+        'SigningJobArn': 'string',
+        'Architectures': [
+            'x86_64'|'arm64',
+        ],
+        'EphemeralStorage': {
+            'Size': 123
+        },
+        'SnapStart': {
+            'ApplyOn': 'PublishedVersions'|'None',
+            'OptimizationStatus': 'On'|'Off'
+        },
+        'RuntimeVersionConfig': {
+            'RuntimeVersionArn': 'string',
+            'Error': {
+                'ErrorCode': 'string',
+                'Message': 'string'
+            }
+        },
+        'LoggingConfig': {
+            'LogFormat': 'JSON'|'Text',
+            'ApplicationLogLevel': 'TRACE'|'DEBUG'|'INFO'|'WARN'|'ERROR'|'FATAL',
+            'SystemLogLevel': 'DEBUG'|'INFO'|'WARN',
+            'LogGroup': 'string'
+        }
+    },
+    'Code': {
+        'RepositoryType': 'string',
+        'Location': 'string',
+        'ImageUri': 'string',
+        'ResolvedImageUri': 'string'
+    },
+    'Tags': {
+        'string': 'string'
+    },
+    'Concurrency': {
+        'ReservedConcurrentExecutions': 123
+    }
+}

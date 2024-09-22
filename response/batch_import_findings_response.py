@@ -1,5 +1,4 @@
 from __future__ import annotations
-from datetime import datetime
 from typing import Dict, Any
 from pydantic import BaseModel
 
@@ -16,16 +15,13 @@ from typing import List, Optional
 from pydantic import BaseModel
 
 
-class Bucket(BaseResponse):
-    Name: Optional[str]
-    CreationDate: Optional[datetime]
+class FailedFinding(BaseResponse):
+    Id: Optional[str]
+    ErrorCode: Optional[str]
+    ErrorMessage: Optional[str]
 
 
-class Owner(BaseResponse):
-    DisplayName: Optional[str]
-    ID: Optional[str]
-
-
-class ListBucketsResponse(BaseResponse):
-    Buckets: Optional[List[Bucket]]
-    Owner: Optional[Owner]
+class BatchImportFindingsResponse(BaseResponse):
+    FailedCount: Optional[int]
+    SuccessCount: Optional[int]
+    FailedFindings: Optional[List[FailedFinding]]

@@ -1,0 +1,11 @@
+{
+    'FailedCount': 123,
+    'SuccessCount': 123,
+    'FailedFindings': [
+        {
+            'Id': 'string',
+            'ErrorCode': 'string',
+            'ErrorMessage': 'string'
+        },
+    ]
+}

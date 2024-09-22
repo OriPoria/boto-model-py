@@ -19,6 +19,8 @@ def get_enum_class_name(dict_json: dict, enum_line_number: str) -> Optional[str]
                     return k + result
                 return result
         elif isinstance(v, list):
+            if len(v) == 1 and isinstance(v[0], str) and v[0] == enum_line_number:
+                return k
             for item in v:
                 result = get_enum_class_name(item, enum_line_number)
                 if result:
@@ -27,7 +29,10 @@ def get_enum_class_name(dict_json: dict, enum_line_number: str) -> Optional[str]
                     return result
 
 def generate_enum_var_name(camel_str: str) -> str:
-    if all([c.isupper() for c in camel_str]):
+    camel_str = camel_str.strip()
+    def _is_upper_or_number_or_underscore(c: str) -> bool:
+        return c.isupper() or c == "_" or c.isdigit()
+    if all([_is_upper_or_number_or_underscore(c) for c in camel_str]):
         return camel_str
     else:
         # Use a regular expression to find the positions to insert underscores
@@ -43,7 +48,8 @@ def generate_enum_var_name(camel_str: str) -> str:
 def write_enum_class(class_name: str, attrs: list[str]) -> str:
     class_str = f"class {class_name}(Enum):\n"
     for a in attrs:
-        class_str += f"\t{generate_enum_var_name(a)} = \"{a}\"\n"
+        attr = a.strip().replace('"', "").replace(',','')
+        class_str += f"\t{generate_enum_var_name(attr)} = \"{attr}\"\n"
     return class_str
 
 
@@ -53,7 +59,6 @@ def enum_classes_to_replace(dict_json: dict, map_from_value_of_temp_enum_to_list
     enum_classes = list()
     enum_classes_names = set()
     for k, v in map_from_value_of_temp_enum_to_list_of_path.items():
-        assert isinstance(v, list)
         class_name = get_enum_class_name(dict_json, k)
         if class_name in enum_classes_names:
             raise Exception(f"Duplication in enum classes names. Name: {class_name}")

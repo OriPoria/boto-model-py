@@ -3,9 +3,10 @@ import json
 import subprocess
 import ast
 import astor
+from dataclasses import dataclass
 
 from boto_model_py.enum_writer import enum_classes_to_replace
-from boto_model_py.preprocessing import preprocess_input
+from boto_model_py.preprocessing import preprocess_input, PreprocessedData, PreprocessException
 from boto_model_py.base_response import base_response_code
 
 LINE_OF_BOOLEAN_PREFIX = "BOOL_LINE_NUMBER"
@@ -53,23 +54,44 @@ def change_ast_field_type(ast_object_, dict_of_values: dict, actual_type: str, m
                     next_attribute = list_of_path[index + 1]
                     for class_body_item in node.body:
                         if isinstance(class_body_item, ast.AnnAssign) and class_body_item.target.id == next_attribute:
-                            def get_root_type(class_body_item_):
+                            def get_root_type(class_body_item_, iteration_until_value: int):
                                 if "slice" in class_body_item_.__dict__:
-                                    return get_root_type(class_body_item_.slice)
+                                    iteration_until_value += 1
+                                    return get_root_type(class_body_item_.slice, iteration_until_value)
                                 else:
                                     assert isinstance(class_body_item_, ast.Name)
-                                    return class_body_item_.id
-                            next_class = get_root_type(class_body_item.annotation)
+                                    return class_body_item_.id, iteration_until_value
+                            next_class, iterations = get_root_type(class_body_item.annotation, 0)
                             if next_class == "str":
-                                class_body_item.annotation.slice.id = actual_type
+                                if iterations == 1:
+                                    class_body_item.annotation.slice.id = actual_type
+                                elif iterations == 2:
+                                    class_body_item.annotation.slice.slice.id = actual_type
+                                else:
+                                    raise NotImplemented("More than 2 iteration until value is not supported")
 
-
-def run_transformation(file_path: str, output_path: str, with_metadata: bool = False):
-
+def _read_input_file(file_path: str) -> str:
     with open(file_path) as f:
-        s_ = f.read()
+        return f.read()
+
+
+@dataclass
+class RunTransformationStatus:
+    file_path: str
+    file_name: str
+    status: str
+
+
+def run_transformation(file_path: str, output_path: str, with_metadata: bool = False) -> RunTransformationStatus:
+    input_file_string = _read_input_file(file_path=file_path)
     file_name = os.path.basename(file_path)
-    dict_json, lkod, lkob, lkwe, enum_dict, map_from_line_of_enum_to_list_of_values = preprocess_input(s_)
+    try:
+        preprocessed_data = preprocess_input(input_file_string)
+        dict_json, lkod, lkob, lkwe, enum_dict, map_from_line_of_enum_to_list_of_values = preprocessed_data.preprocessed_json, preprocessed_data.key_line_datetime, preprocessed_data.key_line_boolean, preprocessed_data.key_line_enum, preprocessed_data.enum_dictionary, preprocessed_data.enum_line_values_map
+    except Exception as exp:
+        breakpoint()
+        print("Error occurred during preprocess", str(exp))
+        return RunTransformationStatus(file_path=file_path, file_name=file_name, status="FAIL")
     map_from_value_of_temp_bool_to_list_of_path = find_all_path_to_value(dict_json, lkob)
     map_from_value_of_temp_enum_to_list_of_path = find_all_path_to_value(dict_json, lkwe)
     map_from_value_of_temp_datetime_to_list_of_path = find_all_path_to_value(dict_json, lkod)
@@ -126,3 +148,4 @@ def run_transformation(file_path: str, output_path: str, with_metadata: bool = F
     # Print the modified code
     with open(module_path, 'w') as f:
         f.write(modified_code)
+    return RunTransformationStatus(file_path=file_path, file_name=file_name, status="OK")
