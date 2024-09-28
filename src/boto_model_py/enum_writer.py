@@ -39,8 +39,7 @@ def generate_enum_var_name(camel_str: str) -> str:
         underscore_str = re.sub(r'(?<!^)(?=[A-Z])', '_', camel_str)
         # Convert the resulting string to upper case
         upper_str = underscore_str.upper()
-        upper_str = upper_str.replace(".", "")
-        upper_str = upper_str.replace("-", "")
+        upper_str = re.sub(r"[.-]|::", "", upper_str)
 
         return upper_str
 

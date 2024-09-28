@@ -10,6 +10,6 @@ def test():
         transformation_status = run_transformation(f"inputs/{file}", "response")
         if transformation_status.status != "OK":
             raise Exception(f"Fail to run transformation on file {file}")
-#
-# def test_single():
-#     run_transformation(f"inputs/invoke", "response")
+
+def test_single():
+    run_transformation(f"inputs/list_analyzers", "response")

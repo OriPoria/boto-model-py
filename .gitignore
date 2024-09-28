@@ -1,2 +1,9 @@
 venv
 __pycache__
+
+.coverage
+cover_agent_unit_test_runs.db
+coverage.xml
+htmlcov
+run.log
+test_results.html
