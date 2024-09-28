@@ -4,10 +4,62 @@ import subprocess
 import ast
 import astor
 from dataclasses import dataclass
+from typing import Union
 
 from boto_model_py.enum_writer import enum_classes_to_replace
 from boto_model_py.preprocessing import preprocess_input, PreprocessedData, PreprocessException
 from boto_model_py.base_response import base_response_code
+
+
+def merge_imports(import_nodes) -> list[Union[ast.Import, ast.ImportFrom]]:
+    imports_dict = {}
+    import_from_dict = {}
+
+    for node in import_nodes:
+        if isinstance(node, ast.Import):
+            # Handle ast.Import: Key on the module being imported
+            for alias in node.names:
+                if alias.name not in imports_dict:
+                    imports_dict[alias.name] = alias
+                elif alias.asname:  # Replace if alias is present
+                    imports_dict[alias.name] = alias
+
+        elif isinstance(node, ast.ImportFrom):
+            # Handle ast.ImportFrom: Key on the module and aggregate names
+            module_key = (node.module, node.level)  # Use both module and level for relative imports
+            if module_key not in import_from_dict:
+                import_from_dict[module_key] = {}
+
+            for alias in node.names:
+                if alias.name not in import_from_dict[module_key]:
+                    import_from_dict[module_key][alias.name] = alias
+                elif alias.asname:  # Replace if alias is present
+                    import_from_dict[module_key][alias.name] = alias
+
+    new_imports = [ast.Import(names=list(imports_dict.values()))] if imports_dict else list()
+
+    import_from_collection = []
+    for (module, level), names in import_from_dict.items():
+        import_from = ast.ImportFrom(
+            module=module,
+            names=list(names.values()),
+            level=level
+        )
+        import_from_collection.append(import_from)
+    return new_imports + import_from_collection
+class ImportSorter(ast.NodeTransformer):
+    def transform(self, node):
+        imports = list()
+        body = list()
+        for n in node.body:
+            if isinstance(n, ast.ImportFrom) or isinstance(n, ast.Import):
+                imports.append(n)
+            else:
+                body.append(n)
+        imports = merge_imports(imports)
+        imports.extend(body)
+        node.body = imports
+        return node
 
 LINE_OF_BOOLEAN_PREFIX = "BOOL_LINE_NUMBER"
 LINE_OF_ENUM_PREFIX = "ENUM_LINE_NUMBER"
@@ -144,6 +196,8 @@ def run_transformation(file_path: str, output_path: str, with_metadata: bool = F
                 node.body.append(ast.parse("ResponseMetadata: Optional[dict]").body[0])
                 print(f"Main class name: {node.name}")
 
+    sorter = ImportSorter()
+    sorter.transform(ast_object)
     modified_code = astor.to_source(ast_object)
     # Print the modified code
     with open(module_path, 'w') as f:
