@@ -80,7 +80,7 @@ on loading the response into the boto-model-py object.
 ## Response folder
 Under `response` folder you can see a batch of responses output from several example from boto3 responses tests. You can
 take your desired module class into your repo or generate the response class by using the boto-model-py package.
-## Setups
+## Developer setups
 In order to contribute to the repository
 ### Prerequisites
 - python3.9 or above
@@ -98,3 +98,7 @@ source ./venv/bin/activate
 ```shell
 pip install -r requirements.txt
 ```
+
+## License
+
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
