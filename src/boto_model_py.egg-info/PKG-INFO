@@ -12,7 +12,7 @@ Requires-Dist: datamodel-code-generator==0.25.7
 
 # Boto Model Python
 Library with single command purposed to transform boto3 response format from boto3 website into a pydantic base model
-complete class hierarchy.
+complete class hierarchy. This is python-code-generation package.
 ## How to use
 ### Clarification
 `boto3` package is expected to be installed in the target environment where generated code is created. There is no 
@@ -89,9 +89,17 @@ print(buckets_object.model_dump_json(indent=3))
 - --with_metadata - By default, loading the response dictionary into the boto-model-py object does not include the 
 `response_metadata` attribute. With using this flag on running the transformation script, this attribute is included
 on loading the response into the boto-model-py object.
+## Response folder
+Under `response` folder you can see a batch of responses output from several example from boto3 responses tests. You can
+take your desired module class into your repo or generate the response class by using the boto-model-py package.
 ## Setups
+In order to contribute to the repository
 ### Prerequisites
 - python3.9 or above
+### Git clone
+```shell
+git clone https://github.com/OriPoria/boto-model-py.git
+```
 ### Installation of venv
 ```shell
 cd boto-model-py

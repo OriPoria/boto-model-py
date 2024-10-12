@@ -10,6 +10,7 @@ def test():
         transformation_status = run_transformation(f"inputs/{file}", "response")
         if transformation_status.status != "OK":
             raise Exception(f"Fail to run transformation on file {file}")
+        print(f"Transformed {file} successfully")
 
 def test_single():
-    run_transformation(f"inputs/list_analyzers", "response")
+    run_transformation(f"inputs/describe_config_rules", "response")
