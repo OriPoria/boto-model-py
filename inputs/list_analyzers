@@ -1,0 +1,25 @@
+{
+    'analyzers': [
+        {
+            'arn': 'string',
+            'name': 'string',
+            'type': 'ACCOUNT'|'ORGANIZATION'|'ACCOUNT_UNUSED_ACCESS'|'ORGANIZATION_UNUSED_ACCESS',
+            'createdAt': datetime(2015, 1, 1),
+            'lastResourceAnalyzed': 'string',
+            'lastResourceAnalyzedAt': datetime(2015, 1, 1),
+            'tags': {
+                'string': 'string'
+            },
+            'status': 'ACTIVE'|'CREATING'|'DISABLED'|'FAILED',
+            'statusReason': {
+                'code': 'AWS_SERVICE_ACCESS_DISABLED'|'DELEGATED_ADMINISTRATOR_DEREGISTERED'|'ORGANIZATION_DELETED'|'SERVICE_LINKED_ROLE_CREATION_FAILED'
+            },
+            'configuration': {
+                'unusedAccess': {
+                    'unusedAccessAge': 123
+                }
+            }
+        },
+    ],
+    'nextToken': 'string'
+}

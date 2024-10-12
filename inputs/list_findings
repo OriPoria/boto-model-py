@@ -1,0 +1,35 @@
+{
+    'findings': [
+        {
+            'id': 'string',
+            'principal': {
+                'string': 'string'
+            },
+            'action': [
+                'string',
+            ],
+            'resource': 'string',
+            'isPublic': True|False,
+            'resourceType': 'AWS::S3::Bucket'|'AWS::IAM::Role'|'AWS::SQS::Queue'|'AWS::Lambda::Function'|'AWS::Lambda::LayerVersion'|'AWS::KMS::Key'|'AWS::SecretsManager::Secret'|'AWS::EFS::FileSystem'|'AWS::EC2::Snapshot'|'AWS::ECR::Repository'|'AWS::RDS::DBSnapshot'|'AWS::RDS::DBClusterSnapshot'|'AWS::SNS::Topic'|'AWS::S3Express::DirectoryBucket'|'AWS::DynamoDB::Table'|'AWS::DynamoDB::Stream',
+            'condition': {
+                'string': 'string'
+            },
+            'createdAt': datetime(2015, 1, 1),
+            'analyzedAt': datetime(2015, 1, 1),
+            'updatedAt': datetime(2015, 1, 1),
+            'status': 'ACTIVE'|'ARCHIVED'|'RESOLVED',
+            'resourceOwnerAccount': 'string',
+            'error': 'string',
+            'sources': [
+                {
+                    'type': 'POLICY'|'BUCKET_ACL'|'S3_ACCESS_POINT'|'S3_ACCESS_POINT_ACCOUNT',
+                    'detail': {
+                        'accessPointArn': 'string',
+                        'accessPointAccount': 'string'
+                    }
+                },
+            ]
+        },
+    ],
+    'nextToken': 'string'
+}

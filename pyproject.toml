@@ -29,4 +29,4 @@ pythonpath = [
 [project.scripts]
 bmpy = "boto_model_py.cli:main"
 
-license = { text = "MIT" }
+license =  "MIT"
