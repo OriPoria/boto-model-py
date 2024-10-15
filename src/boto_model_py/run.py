@@ -1,7 +1,6 @@
 import os
 import ast
 import astor
-from typing import Union
 from functools import partial
 from dataclasses import dataclass
 
@@ -14,35 +13,13 @@ from boto_model_py.preprocessor import (
 )
 from boto_model_py.consts_source_code import base_response_code
 from boto_model_py.temporary_file import create_temporary_file
-from boto_model_py.ast_processor.field_type import change_ast_field_type, merge_imports, ImportSorter
-
-
-def find_path(json_part: [Union[str, dict, list]], value, path=None):
-    if path is None:
-        path = []
-    if isinstance(json_part, str):
-        return path if json_part == value else None
-    for k, v in json_part.items():
-        current_path = path + [k]
-        if v == value:
-            return current_path
-        elif isinstance(v, dict):
-            result = find_path(v, value, current_path)
-            if result:
-                return result
-        elif isinstance(v, list):
-            for item in v:
-                result = find_path(item, value, current_path)
-                if result:
-                    return result
-    return None
-
-
-def find_all_path_to_value(dict_json: dict, list_of_values_in_json: list[str]) -> dict:
-    result = dict()
-    for v in list_of_values_in_json:
-        result[v] = find_path(json_part=dict_json, value=v)
-    return result
+from boto_model_py.ast_processor.field_type import (
+    change_ast_field_type,
+    merge_imports,
+    ImportSorter,
+)
+from boto_model_py.json_processing import find_all_path_to_value
+from boto_model_py.source_code_editor import edit_source_code
 
 
 def read_boto_response_syntax_file(file_path: str) -> str:
@@ -89,15 +66,13 @@ def run_transformation(
         map_from_value_of_temp_enum_to_list_of_path,
         preprocessed_data.enum_line_values_map,
     )
-    ###### End process of json
 
     output_file_spec = create_output_file(
         output_path=output_path,
         boto_response_syntax_file_name=boto_response_syntax_file_name,
         preprocessed_file_path=preprocessed_file_path,
     )
-    source_code = output_file_spec.code_file.replace(" = None", "")
-    source_code = source_code.replace("(BaseModel):", "(BaseResponse):")
+    source_code = edit_source_code(output_file_spec.code_file)
 
     base_response_code_ast = ast.parse(base_response_code).body
     ast_object = ast.parse(source_code)

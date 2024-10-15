@@ -59,7 +59,6 @@ class ImportSorter(ast.NodeTransformer):
         return node
 
 
-
 def change_ast_field_type(
     ast_object_, dict_of_values: dict, actual_type: str, main_class_name: str
 ):
