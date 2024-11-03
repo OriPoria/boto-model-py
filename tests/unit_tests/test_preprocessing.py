@@ -5,6 +5,7 @@ from boto_model_py.preprocessor.preprocessing import StringFormatter
 from boto_model_py.preprocessor.preprocessing import build_special_type_string_line
 from boto_model_py.preprocessor.consts import SpecialTypeLinePlaceholder
 from boto_model_py.preprocessor.preprocessing import replace_one_quote_dict_to_json
+from boto_model_py.preprocessor.preprocessing import generate_enum_dicts
 
 
 def test_special_type_lines_extractor_no_special_types():
@@ -15,15 +16,16 @@ def test_special_type_lines_extractor_no_special_types():
         SpecialTypesNames.ENUM: [],
         SpecialTypesNames.DATETIME: [],
         SpecialTypesNames.BOOLEAN: [],
-        SpecialTypesNames.OBJECT: []
+        SpecialTypesNames.OBJECT: [],
     }
     assert result, expected_result
+
 
 def test_special_type_line_replacer_replace_lines_of_enums():
     response_syntax_string = 'key: "option1"|"option2"'
     replacer = SpecialTypeLineReplacer(response_syntax_string)
-    result = replacer.replace_lines_of_enums(['ENUM_LINE_NUMBER_0'])
-    expected_result = {0: ['option1', 'option2']}
+    result = replacer.replace_lines_of_enums(["ENUM_LINE_NUMBER_0"])
+    expected_result = {0: ["option1", "option2"]}
     assert result == expected_result
     assert replacer.processed_string == 'key: "ENUM_LINE_NUMBER_0"'
 
@@ -55,8 +57,27 @@ def test_special_type_lines_extractor_with_datetime():
     result = extractor.extract_lines_of_types()
     expected_result = {
         SpecialTypesNames.ENUM: [],
-        SpecialTypesNames.DATETIME: ['DATETIME_LINE_NUMBER_0'],
+        SpecialTypesNames.DATETIME: ["DATETIME_LINE_NUMBER_0"],
         SpecialTypesNames.BOOLEAN: [],
-        SpecialTypesNames.OBJECT: []
+        SpecialTypesNames.OBJECT: [],
     }
     assert result == expected_result
+
+
+def test_generate_enum_dicts():
+    string = "'Owner': 'CUSTOM_LAMBDA'|'AWS'|'CUSTOM_POLICY'"
+    line_numbers_of_enum = {0}
+    actual = generate_enum_dicts(string, line_numbers_of_enum)
+
+    expected = [
+        (
+            "'Owner'",
+            {
+                "'CUSTOM_LAMBDA'": "'CUSTOM_LAMBDA'",
+                "'AWS'": "'AWS'",
+                "'CUSTOM_POLICY'": "'CUSTOM_POLICY'",
+            },
+        )
+    ]
+
+    assert actual == expected

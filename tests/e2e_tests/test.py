@@ -12,5 +12,6 @@ def test():
             raise Exception(f"Fail to run transformation on file {file}")
         print(f"Transformed {file} successfully")
 
+
 def test_single():
-    run_transformation(f"inputs/describe_config_rules", "response")
+    run_transformation(f"inputs/get_log_events", "response")

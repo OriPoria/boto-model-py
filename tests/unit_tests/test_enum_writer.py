@@ -1,17 +1,20 @@
-from boto_model_py.enum_writer import generate_enum_var_name
+from boto_model_py.enum_writer import (
+    _generate_enum_var_name,
+    enum_classes_to_replace,
+    write_enum_class,
+    get_enum_class_name,
+)
 
-from boto_model_py.enum_writer import enum_classes_to_replace
-from boto_model_py.enum_writer import write_enum_class
-from boto_model_py.enum_writer import get_enum_class_name
 
 def test_generate_enum_var_name_camel():
-    res = generate_enum_var_name("testSet")
+    res = _generate_enum_var_name("testSet")
     assert res == "TEST_SET"
 
 
 def test_generate_enum_var_name_all_upper():
-    res = generate_enum_var_name("TEST")
+    res = _generate_enum_var_name("TEST")
     assert res == "TEST"
+
 
 def test_get_enum_class_name_with_parent_name_in_list():
     dict_json = {"key1": [{"Status": "enum_line"}]}
@@ -21,10 +24,17 @@ def test_get_enum_class_name_with_parent_name_in_list():
 
 def test_enum_classes_to_replace_duplicate_names():
     dict_json = {"key1": "enum_line_1", "key2": "enum_line_2"}
-    map_from_value_of_temp_enum_to_list_of_path = {"enum_line_1": ["path1"], "enum_line_2": ["path2"]}
+    map_from_value_of_temp_enum_to_list_of_path = {
+        "enum_line_1": ["path1"],
+        "enum_line_2": ["path2"],
+    }
     map_from_line_of_enum_to_list_of_values = {1: ["value1"], 2: ["value2"]}
     try:
-        enum_classes_to_replace(dict_json, map_from_value_of_temp_enum_to_list_of_path, map_from_line_of_enum_to_list_of_values)
+        enum_classes_to_replace(
+            dict_json,
+            map_from_value_of_temp_enum_to_list_of_path,
+            map_from_line_of_enum_to_list_of_values,
+        )
     except Exception as e:
         assert str(e) == "Duplication in enum classes names. Name: None"
 
@@ -70,4 +80,3 @@ def test_get_enum_class_name_top_level():
 def test_get_enum_class_name_with_string_input():
     result = get_enum_class_name("not_a_dict", "enum_line")
     assert result is None
-
