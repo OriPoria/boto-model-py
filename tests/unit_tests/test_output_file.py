@@ -1,3 +1,5 @@
+import os
+
 from boto_model_py.output_file import create_output_file
 from boto_model_py.temporary_file import create_temporary_file
 
@@ -9,4 +11,7 @@ def test_create_output_file():
         boto_response_syntax_file_name="temp_file_name",
         preprocessed_file_path=file_path,
     )
+    assert os.path.exists(output_file_spec.module_path)
     assert output_file_spec.main_class_name == "TempFileNameResponse"
+
+    os.remove(output_file_spec.module_path)
