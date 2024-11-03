@@ -13,6 +13,9 @@ cleanup:
 build:
 	python -m build
 
+release:
+	python3 -m twine upload --repository testpypi dist/*
+
 coverage:
 	 python -m pytest --cov=tests/unit_tests/ --cov-report=html
 
