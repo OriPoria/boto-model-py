@@ -14,3 +14,5 @@ class BaseResponse(BaseModel):
         # Call the parent __init__ method with the initialized data
         super().__init__(**init_data)
 """
+datatime_import = "from datetime import datetime"
+enum_import = "from enum import Enum"

@@ -29,7 +29,7 @@ def get_enum_class_name(dict_json: dict, enum_line_number: str) -> Optional[str]
                     return result
 
 
-def generate_enum_var_name(camel_str: str) -> str:
+def _generate_enum_var_name(camel_str: str) -> str:
     camel_str = camel_str.strip()
 
     def _is_upper_or_number_or_underscore(c: str) -> bool:
@@ -40,7 +40,6 @@ def generate_enum_var_name(camel_str: str) -> str:
     else:
         # Use a regular expression to find the positions to insert underscores
         underscore_str = re.sub(r"(?<!^)(?=[A-Z])", "_", camel_str)
-        # Convert the resulting string to upper case
         upper_str = underscore_str.upper()
         upper_str = re.sub(r"[.-]|::", "", upper_str)
 
@@ -51,7 +50,7 @@ def write_enum_class(class_name: str, attrs: list[str]) -> str:
     class_str = f"class {class_name}(Enum):\n"
     for a in attrs:
         attr = a.strip().replace('"', "").replace(",", "")
-        class_str += f'\t{generate_enum_var_name(attr)} = "{attr}"\n'
+        class_str += f'\t{_generate_enum_var_name(attr)} = "{attr}"\n'
     return class_str
 
 
