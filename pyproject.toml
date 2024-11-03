@@ -18,6 +18,10 @@ dependencies = [
     'datamodel-code-generator==0.25.7'
 ]
 
+[tool.hatch.build]
+include = ["src/**", "README.md", "LICENSE"]
+exclude = ["__pycache__", "*.pyc", "*.pyo", "*.pyd", "dist", "build"]
+
 [tool.setuptools.packages.find]
 where = ["src"]
 

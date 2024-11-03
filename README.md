@@ -6,9 +6,9 @@ complete class hierarchy. This is python-code-generation package.
 `boto3` package is expected to be installed in the target environment where generated code is created. There is no 
 installation of boto3 package during installation of `boto-model-py` package.
 ### Pre-steps
-1. Download the wheel file from `dist` folder and install into local venv with pip
+1. To install this package, you can use `pip`, the Python package installer. Run the following command in your terminal:
 ```shell
-pip install boto_model_py-0.0.1-py3-none-any.whl
+pip install boto-model-py
 ```
 ### Usage
 The main transformation script relies on responses syntax from boto3 documentation website.
