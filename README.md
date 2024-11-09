@@ -40,7 +40,7 @@ buckets = client.list_buckets()
 2. Go to the boto3 `list_buckets` API request docs: [bot3 API list_buckets](https://boto3.amazonaws.com/v1/documentation/api/latest/reference/services/s3/client/list_buckets.html)
 3. Copy response syntax into a local file called `input`
 ```shell
-touch input
+touch list_buckets_input
 ```
 intput file:
 ```text
@@ -59,12 +59,12 @@ intput file:
 ```
 4. Running `bmpy` command and generate response module in the desired location (suppose I have `response` folder in my project)
 ```shell
-bmpy input response
+bmpy list_buckets_input response
 ```
 5. The response module is under generated under the `output_path` folder, with the with a class called `ListBucketsResponse`. 
 You can import it in the project, and load the response into the base class. Then using all pydantic base class feature is easy.
 
-[Expected output](tests/unit_tests/files/expected_list_buckets_response.py) 
+[Expected output from GitHubRepo](tests/unit_tests/files/expected_list_buckets_response.py) 
 ```python
 import boto3
 
