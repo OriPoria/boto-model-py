@@ -9,6 +9,8 @@ test_single:
 
 cleanup:
 	rm response/*
+	rm dist/*
+	rm -rf ./src/boto_model_py.egg-info
 
 build:
 	python -m build

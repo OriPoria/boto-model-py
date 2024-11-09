@@ -3,7 +3,7 @@ import json
 from unittest.mock import patch
 
 from boto_model_py.preprocessor import PreprocessedData
-from boto_model_py.run import run_transformation, RunTransformationSummary
+from boto_model_py.run import run_transformation, RunTransformationSummary, RunTransformationStatus
 
 
 def test_run_transformation():
@@ -41,7 +41,7 @@ def test_run_transformation_error():
         **{
             "file_path": "tests/unit_tests/files/list_buckets_error",
             "file_name": "list_buckets_error",
-            "status": "FAIL",
+            "status": RunTransformationStatus.FAIL,
             "result_output_path": None,
             "message": "Preprocessor failed to generate appropriate Json format of the response syntax",
         }

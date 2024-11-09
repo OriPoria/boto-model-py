@@ -1,5 +1,5 @@
 import os
-from enum import StrEnum
+from enum import Enum
 from typing import Optional
 from dataclasses import dataclass
 
@@ -22,7 +22,7 @@ def read_boto_response_syntax_file(file_path: str) -> str:
         return f.read()
 
 
-class RunTransformationStatus(StrEnum):
+class RunTransformationStatus(Enum):
     OK = "OK"
     FAIL = "FAIL"
 

@@ -1,1 +1,0 @@
-boto_model_py
