@@ -1,7 +1,7 @@
 Metadata-Version: 2.1
 Name: boto-model-py
-Version: 0.0.3
-Summary: Code generator package to auto convert boto3 response syntax into pydantic base model class full hierarchy
+Version: 0.0.5
+Summary: A code generation library that converts AWS boto3 responses into a Python module with fully hierarchical Python data classes
 Classifier: Programming Language :: Python :: 3
 Classifier: Operating System :: OS Independent
 Requires-Python: >=3.9
@@ -14,8 +14,10 @@ Requires-Dist: datamodel-code-generator==0.25.7
 # Boto Model Python
 A code generation library that converts AWS boto3 responses into a Python module with fully hierarchical data classes 
 representing the response structure.
+
 The package provides a single gateway function. This function takes the path to a boto3 response JSON syntax and a 
 desired output path, generating Python data classes and enums based on the response structure.
+
 This utility is designed for Python-boto3 developers who want quick access to boto3 response attributes and the full 
 benefits of Pydantic BaseModel and Python enums, without dealing with the complexity of deep dictionary hierarchies.
 ## How to use
@@ -51,7 +53,7 @@ buckets = client.list_buckets()
 2. Go to the boto3 `list_buckets` API request docs: [bot3 API list_buckets](https://boto3.amazonaws.com/v1/documentation/api/latest/reference/services/s3/client/list_buckets.html)
 3. Copy response syntax into a local file called `input`
 ```shell
-touch input
+touch list_buckets_input
 ```
 intput file:
 ```text
@@ -70,11 +72,12 @@ intput file:
 ```
 4. Running `bmpy` command and generate response module in the desired location (suppose I have `response` folder in my project)
 ```shell
-bmpy input response
+bmpy list_buckets_input response
 ```
 5. The response module is under generated under the `output_path` folder, with the with a class called `ListBucketsResponse`. 
 You can import it in the project, and load the response into the base class. Then using all pydantic base class feature is easy.
-[Expected output](tests/unit_tests/files/expected_list_buckets_response.txt) 
+
+[Expected output from GitHubRepo](tests/unit_tests/files/expected_list_buckets_response.py) 
 ```python
 import boto3
 
