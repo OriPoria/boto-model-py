@@ -12,7 +12,7 @@ def test_run_transformation():
     input_path = os.path.join(files_path, "list_buckets")
     output_folder_path = os.path.join(files_path)
     expected_output_response_path = os.path.join(
-        files_path, "expected_list_buckets_response.txt"
+        files_path, "expected_list_buckets_response.py"
     )
 
     with open(mock_preprocess_data_path) as f:
@@ -21,7 +21,7 @@ def test_run_transformation():
     with patch(
         "boto_model_py.run.preprocess_input", return_value=mock_preprocessed_data
     ):
-        result = run_transformation(input_path, output_folder_path, False)
+        result = run_transformation(input_path, output_folder_path)
 
     result_output_path = os.path.join(output_folder_path, "list_buckets_response.py")
 

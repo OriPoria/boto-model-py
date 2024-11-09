@@ -1,0 +1,20 @@
+{
+    'logGroups': [
+        {
+            'logGroupName': 'string',
+            'creationTime': 123,
+            'retentionInDays': 123,
+            'metricFilterCount': 123,
+            'arn': 'string',
+            'storedBytes': 123,
+            'kmsKeyId': 'string',
+            'dataProtectionStatus': 'ACTIVATED'|'DELETED'|'ARCHIVED'|'DISABLED',
+            'inheritedProperties': [
+                'ACCOUNT_DATA_PROTECTION',
+            ],
+            'logGroupClass': 'STANDARD'|'INFREQUENT_ACCESS',
+            'logGroupArn': 'string'
+        },
+    ],
+    'nextToken': 'string'
+}

@@ -1,0 +1,15 @@
+{
+    'logStreams': [
+        {
+            'logStreamName': 'string',
+            'creationTime': 123,
+            'firstEventTimestamp': 123,
+            'lastEventTimestamp': 123,
+            'lastIngestionTime': 123,
+            'uploadSequenceToken': 'string',
+            'arn': 'string',
+            'storedBytes': 123
+        },
+    ],
+    'nextToken': 'string'
+}

@@ -1,0 +1,11 @@
+{
+    'events': [
+        {
+            'timestamp': 123,
+            'message': 'string',
+            'ingestionTime': 123
+        },
+    ],
+    'nextForwardToken': 'string',
+    'nextBackwardToken': 'string'
+}
