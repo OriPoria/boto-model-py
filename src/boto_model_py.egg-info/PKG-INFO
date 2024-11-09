@@ -1,6 +1,6 @@
 Metadata-Version: 2.1
 Name: boto-model-py
-Version: 0.1.0
+Version: 0.1.1
 Summary: A code generation library that converts AWS boto3 responses into a Python module with fully hierarchical Python data classes
 License: MIT
 Classifier: Programming Language :: Python :: 3
@@ -8,7 +8,7 @@ Classifier: Operating System :: OS Independent
 Requires-Python: >=3.9
 Description-Content-Type: text/markdown
 License-File: LICENSE
-Requires-Dist: pydantic==2.7.4
+Requires-Dist: pydantic<3
 Requires-Dist: astor==0.8.1
 Requires-Dist: datamodel-code-generator==0.25.7
 
