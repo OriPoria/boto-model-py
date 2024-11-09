@@ -17,6 +17,6 @@ release:
 	python3 -m twine upload --repository testpypi dist/*
 
 coverage:
-	 python -m pytest --cov=tests/unit_tests/ --cov-report=html
+	 python -m pytest tests/unit_tests --cov=src/ --cov-report=html
 
 
