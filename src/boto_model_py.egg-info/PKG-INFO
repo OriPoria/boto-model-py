@@ -1,6 +1,6 @@
 Metadata-Version: 2.1
 Name: boto-model-py
-Version: 0.0.2
+Version: 0.0.3
 Summary: Code generator package to auto convert boto3 response syntax into pydantic base model class full hierarchy
 Classifier: Programming Language :: Python :: 3
 Classifier: Operating System :: OS Independent
@@ -12,8 +12,12 @@ Requires-Dist: astor==0.8.1
 Requires-Dist: datamodel-code-generator==0.25.7
 
 # Boto Model Python
-Library with single command purposed to transform boto3 response format from boto3 website into a pydantic base model
-complete class hierarchy. This is python-code-generation package.
+A code generation library that converts AWS boto3 responses into a Python module with fully hierarchical data classes 
+representing the response structure.
+The package provides a single gateway function. This function takes the path to a boto3 response JSON syntax and a 
+desired output path, generating Python data classes and enums based on the response structure.
+This utility is designed for Python-boto3 developers who want quick access to boto3 response attributes and the full 
+benefits of Pydantic BaseModel and Python enums, without dealing with the complexity of deep dictionary hierarchies.
 ## How to use
 ### Clarification
 `boto3` package is expected to be installed in the target environment where generated code is created. There is no 
@@ -70,6 +74,7 @@ bmpy input response
 ```
 5. The response module is under generated under the `output_path` folder, with the with a class called `ListBucketsResponse`. 
 You can import it in the project, and load the response into the base class. Then using all pydantic base class feature is easy.
+[Expected output](tests/unit_tests/files/expected_list_buckets_response.txt) 
 ```python
 import boto3
 
