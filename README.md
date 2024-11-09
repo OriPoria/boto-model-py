@@ -1,8 +1,10 @@
 # Boto Model Python
 A code generation library that converts AWS boto3 responses into a Python module with fully hierarchical data classes 
 representing the response structure.
+
 The package provides a single gateway function. This function takes the path to a boto3 response JSON syntax and a 
 desired output path, generating Python data classes and enums based on the response structure.
+
 This utility is designed for Python-boto3 developers who want quick access to boto3 response attributes and the full 
 benefits of Pydantic BaseModel and Python enums, without dealing with the complexity of deep dictionary hierarchies.
 ## How to use
