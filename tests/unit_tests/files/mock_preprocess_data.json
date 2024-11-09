@@ -1,0 +1,29 @@
+{
+   "preprocessed_json":{
+      "Buckets":[
+         {
+            "Name":"string",
+            "CreationDate":"DATETIME_LINE_NUMBER_4"
+         }
+      ],
+      "Owner":{
+         "DisplayName":"string",
+         "ID":"string"
+      }
+   },
+   "key_line_datetime":{
+      "DATETIME_LINE_NUMBER_4":[
+         "Buckets",
+         "CreationDate"
+      ]
+   },
+   "key_line_boolean":{
+
+   },
+   "key_line_enum":{
+
+   },
+   "enum_line_values_map":{
+
+   }
+}

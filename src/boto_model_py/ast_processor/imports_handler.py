@@ -2,17 +2,15 @@ import ast
 import astor
 from typing import Union
 
-from boto_model_py.consts_source_code import base_response_code, datatime_import, enum_import
+from .consts_source_code import datatime_import, enum_import
 
 
-def append_source_imports_based_on_field_types_required(source_code: str,
+def append_source_imports_based_on_field_types_required(ast_object: ast.Module,
+                                                        base_response_ast: list[ast.stmt],
                                                         map_from_value_of_temp_datetime_to_list_of_path,
                                                         map_from_value_of_temp_enum_to_list_of_path,
                                                         enum_classes_ast):
-    base_response_code_ast = ast.parse(base_response_code).body
-    ast_object = ast.parse(source_code)
-
-    for b_r in base_response_code_ast:
+    for b_r in base_response_ast:
         if isinstance(b_r, ast.ImportFrom):
             ast_object.body.insert(1, b_r)
         else:
@@ -82,6 +80,10 @@ def _transform(node):
     return node
 
 
-def sort_imports(ast_object) -> str:
+def _sort_imports(ast_object: ast.Module) -> str:
     _transform(ast_object)
     return astor.to_source(ast_object)
+
+
+def handle_object_imports(ast_object: ast.Module):
+    return _sort_imports(ast_object=ast_object)

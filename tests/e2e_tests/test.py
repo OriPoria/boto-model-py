@@ -14,4 +14,4 @@ def test():
 
 
 def test_single():
-    run_transformation(f"inputs/get_log_events", "response")
+    run_transformation(f"inputs/list_buckets", "response")

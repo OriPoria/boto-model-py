@@ -39,11 +39,19 @@ def test_enum_classes_to_replace_duplicate_names():
         assert str(e) == "Duplication in enum classes names. Name: None"
 
 
-def test_write_enum_class():
+def test_write_enum_class_1():
     class_name = "TestEnum"
     attrs = ["attr1", "attr2"]
     result = write_enum_class(class_name, attrs)
     expected = 'class TestEnum(Enum):\n\tATTR1 = "attr1"\n\tATTR2 = "attr2"\n'
+    assert result == expected
+
+
+def test_write_enum_class_2():
+    class_name = "TestEnum"
+    attrs = ["attr_1", "attr_2"]
+    result = write_enum_class(class_name, attrs)
+    expected = 'class TestEnum(Enum):\n\tATTR_1 = "attr_1"\n\tATTR_2 = "attr_2"\n'
     assert result == expected
 
 

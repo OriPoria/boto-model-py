@@ -2,6 +2,8 @@ import re
 import ast
 from typing import Optional
 
+from boto_model_py.consts_source_code import enum_class_header
+
 
 WITH_PARENT_NAME = ["State", "Status"]
 
@@ -47,9 +49,9 @@ def _generate_enum_var_name(camel_str: str) -> str:
 
 
 def write_enum_class(class_name: str, attrs: list[str]) -> str:
-    class_str = f"class {class_name}(Enum):\n"
+    class_str = enum_class_header.format(class_name=class_name) + '\n'
     for a in attrs:
-        attr = a.strip().replace('"', "").replace(",", "")
+        attr = re.sub(r'[",]', '', a.strip())
         class_str += f'\t{_generate_enum_var_name(attr)} = "{attr}"\n'
     return class_str
 

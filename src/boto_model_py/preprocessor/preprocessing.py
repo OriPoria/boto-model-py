@@ -1,9 +1,13 @@
 import re
 import json
+from functools import partial
 from dataclasses import dataclass
 from typing import Callable, Protocol
 
+from ..json_processing import find_all_path_to_value
 from .consts import SpecialTypeLinePlaceholder, SpecialTypesNames
+from .models import PreprocessedData
+
 
 PLACEHOLDER_LINE_NUMBER_SEP = "_"
 
@@ -133,7 +137,7 @@ class SpecialTypeLineReplacer(StringProcessor):
             i += 1
         return enum_map_from_line_number_to_list_of_strings
 
-    def replace_line_of_item(self, line_of_item: list[str], place_holder: str):
+    def replace_line_of_item(self, line_of_item: list[str], place_holder: SpecialTypeLinePlaceholder):
         """Can replace of bool, datetime or object"""
         line_numbers = {
             int(i.split(PLACEHOLDER_LINE_NUMBER_SEP)[-1]) for i in line_of_item
@@ -158,32 +162,32 @@ class SpecialTypeLineReplacer(StringProcessor):
         return self.response_syntax_string
 
 
-def generate_enum_dicts(string: str, line_numbers_of_enums: set[int]) -> list[tuple]:
-    lines = string.split("\n")
-    enums_dicts = list()
-    for i, l in enumerate(lines):
-        if i in line_numbers_of_enums:
-            line_of_enum_split = l.strip(",").split(": ")
-            if len(line_of_enum_split) == 2:
-                part_of_value = line_of_enum_split[1]
-                part_of_key = line_of_enum_split[0].strip(" ").strip('"')
-            elif len(line_of_enum_split) == 1 and lines[i - 1].endswith("["):
-                part_of_value = line_of_enum_split[0]
-                matches = re.findall(r'"(.*?)"', lines[i - 1])
-                assert len(matches) == 1
-                part_of_key = matches[0]
-            else:
-                raise Exception("Unexpected length of enum")
-            enum_values = part_of_value.split("|")
-            dict_ = dict()
-            for enum_value in enum_values:
-                dict_[
-                    enum_value.upper()
-                    .replace("-", PLACEHOLDER_LINE_NUMBER_SEP)
-                    .strip('"')
-                ] = enum_value
-            enums_dicts.append((part_of_key, dict_))
-    return enums_dicts
+# def generate_enum_dicts(string: str, line_numbers_of_enums: set[int]) -> list[tuple]:
+#     lines = string.split("\n")
+#     enums_dicts = list()
+#     for i, l in enumerate(lines):
+#         if i in line_numbers_of_enums:
+#             line_of_enum_split = l.strip(",").split(": ")
+#             if len(line_of_enum_split) == 2:
+#                 part_of_value = line_of_enum_split[1]
+#                 part_of_key = line_of_enum_split[0].strip(" ").strip('"')
+#             elif len(line_of_enum_split) == 1 and lines[i - 1].endswith("["):
+#                 part_of_value = line_of_enum_split[0]
+#                 matches = re.findall(r'"(.*?)"', lines[i - 1])
+#                 assert len(matches) == 1
+#                 part_of_key = matches[0]
+#             else:
+#                 raise Exception("Unexpected length of enum")
+#             enum_values = part_of_value.split("|")
+#             dict_ = dict()
+#             for enum_value in enum_values:
+#                 dict_[
+#                     enum_value.upper()
+#                     .replace("-", PLACEHOLDER_LINE_NUMBER_SEP)
+#                     .strip('"')
+#                 ] = enum_value
+#             enums_dicts.append((part_of_key, dict_))
+#     return enums_dicts
 
 
 class StringFormatter(StringProcessor):
@@ -203,17 +207,6 @@ class StringFormatter(StringProcessor):
     def processed_string(self) -> str:
         return self.input_string
 
-
-@dataclass
-class PreprocessedData:
-    preprocessed_json: dict
-    key_line_datetime: list[str]
-    key_line_boolean: list[str]
-    key_line_enum: list
-    enum_dictionary: list[tuple]
-    enum_line_values_map: dict
-
-
 class PreprocessException(Exception):
     pass
 
@@ -228,7 +221,7 @@ def preprocess_input(response_syntax_string: str) -> PreprocessedData:
         for it in special_type_lines[SpecialTypesNames.ENUM]
     ]
     enum_idx.sort()
-    enum_dict = generate_enum_dicts(response_syntax_string, set(enum_idx))
+    # enum_data = generate_enum_dicts(response_syntax_string, set(enum_idx))
 
     # Replace input string with placeholder of special types
     string_replacer = SpecialTypeLineReplacer(response_syntax_string)
@@ -252,12 +245,21 @@ def preprocess_input(response_syntax_string: str) -> PreprocessedData:
 
     string_formatter.remove_white_spaces()
     string_formatter.remove_unquoted_commas()
-    response_syntax_dict = json.loads(string_formatter.processed_string)
+    try:
+        response_syntax_dict = json.loads(string_formatter.processed_string)
+    except json.decoder.JSONDecodeError:
+        raise PreprocessException("Preprocessor failed to generate appropriate Json format of the response syntax")
+
+    find_all_path_to_value_partial = partial(
+        find_all_path_to_value, dict_json=response_syntax_dict
+    )
+
     return PreprocessedData(
         preprocessed_json=response_syntax_dict,
-        key_line_datetime=special_type_lines[SpecialTypesNames.DATETIME],
-        key_line_boolean=special_type_lines[SpecialTypesNames.BOOLEAN],
-        key_line_enum=special_type_lines[SpecialTypesNames.ENUM],
-        enum_dictionary=enum_dict,
+        key_line_datetime=find_all_path_to_value_partial(
+        list_of_values_in_json=special_type_lines[SpecialTypesNames.DATETIME]),
+        key_line_boolean=find_all_path_to_value_partial(list_of_values_in_json=special_type_lines[SpecialTypesNames.BOOLEAN]),
+        key_line_enum=find_all_path_to_value_partial(
+        list_of_values_in_json=special_type_lines[SpecialTypesNames.ENUM]),
         enum_line_values_map=map_from_line_of_enum_to_list_of_values,
     )

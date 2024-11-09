@@ -1,0 +1,12 @@
+{
+    'Buckets': [
+        {
+            'Name': 'string',
+            'CreationDate': unknown_type
+        },
+    ],
+    'Owner': {
+        'DisplayName': 'string',
+        'ID': 'string'
+    }
+}

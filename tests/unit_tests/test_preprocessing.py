@@ -1,3 +1,5 @@
+import os
+
 from boto_model_py.preprocessor.preprocessing import SpecialTypeLinesExtractor
 from boto_model_py.preprocessor.consts import SpecialTypesNames
 from boto_model_py.preprocessor.preprocessing import SpecialTypeLineReplacer
@@ -5,7 +7,6 @@ from boto_model_py.preprocessor.preprocessing import StringFormatter
 from boto_model_py.preprocessor.preprocessing import build_special_type_string_line
 from boto_model_py.preprocessor.consts import SpecialTypeLinePlaceholder
 from boto_model_py.preprocessor.preprocessing import replace_one_quote_dict_to_json
-from boto_model_py.preprocessor.preprocessing import generate_enum_dicts
 
 
 def test_special_type_lines_extractor_no_special_types():
@@ -64,20 +65,22 @@ def test_special_type_lines_extractor_with_datetime():
     assert result == expected_result
 
 
-def test_generate_enum_dicts():
-    string = "'Owner': 'CUSTOM_LAMBDA'|'AWS'|'CUSTOM_POLICY'"
-    line_numbers_of_enum = {0}
-    actual = generate_enum_dicts(string, line_numbers_of_enum)
+def test_replace_line_of_item():
+    line_of_item = ["BOOL_LINE_NUMBER_28"]
+    place_holder = SpecialTypeLinePlaceholder.LINE_OF_BOOLEAN_PREFIX
+    with open(
+        os.path.join("tests", "unit_tests", "files", "response_syntax_string.txt")
+    ) as f:
+        string_lines = f.read()
 
-    expected = [
-        (
-            "'Owner'",
-            {
-                "'CUSTOM_LAMBDA'": "'CUSTOM_LAMBDA'",
-                "'AWS'": "'AWS'",
-                "'CUSTOM_POLICY'": "'CUSTOM_POLICY'",
-            },
+    replacer = SpecialTypeLineReplacer(response_syntax_string=string_lines)
+    replacer.replace_line_of_item(line_of_item=line_of_item, place_holder=place_holder)
+
+    with open(
+        os.path.join(
+            "tests", "unit_tests", "files", "response_syntax_string_expected.txt"
         )
-    ]
+    ) as f:
+        response_syntax_string_expected = f.read()
 
-    assert actual == expected
+    assert response_syntax_string_expected == replacer.response_syntax_string
