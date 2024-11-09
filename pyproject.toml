@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "boto-model-py"
-version = "0.0.2"
+version = "0.0.3"
 description = "Code generator package to auto convert boto3 response syntax into pydantic base model class full hierarchy"
 readme = "README.md"
 requires-python = ">=3.9"
