@@ -12,7 +12,7 @@ def convert_ast_object(source_code: str,
                        preprocessed_data: PreprocessedData,
                        output_file_spec: OutputFileSpec,
                        enum_classes_ast: list[ast.ClassDef],
-                       enum_class_names) -> list[dict[str, list[str]]]:
+                       enum_class_names) -> ast.Module:
     base_response_code_ast = ast.parse(base_response_code).body
     ast_object = ast.parse(source_code)
     ast_object = append_source_imports_based_on_field_types_required(ast_object,

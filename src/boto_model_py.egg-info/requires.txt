@@ -1,0 +1,3 @@
+pydantic==2.7.4
+astor==0.8.1
+datamodel-code-generator==0.25.7

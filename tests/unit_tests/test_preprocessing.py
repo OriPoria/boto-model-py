@@ -40,7 +40,7 @@ def test_string_formatter_remove_white_spaces():
 
 
 def test_build_special_type_string_line():
-    placeholder = SpecialTypeLinePlaceholder.LINE_OF_ENUM_PREFIX
+    placeholder = SpecialTypeLinePlaceholder.LINE_OF_ENUM_PREFIX.value
     line_number = 5
     expected_output = f"{placeholder}_{line_number}"
     assert build_special_type_string_line(placeholder, line_number) == expected_output

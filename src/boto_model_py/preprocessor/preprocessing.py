@@ -19,17 +19,17 @@ class SpecialType:
 
 
 datetime_type = SpecialType(
-    placeholder=SpecialTypeLinePlaceholder.LINE_OF_DATETIME_PREFIX,
+    placeholder=SpecialTypeLinePlaceholder.LINE_OF_DATETIME_PREFIX.value,
     predicate=lambda line: "datetime(" in line,
 )
 
 boolean_type = SpecialType(
-    placeholder=SpecialTypeLinePlaceholder.LINE_OF_BOOLEAN_PREFIX,
+    placeholder=SpecialTypeLinePlaceholder.LINE_OF_BOOLEAN_PREFIX.value,
     predicate=lambda line: "True|False" in line,
 )
 
 object_type = SpecialType(
-    placeholder=SpecialTypeLinePlaceholder.LINE_OF_OBJECT_PREFIX,
+    placeholder=SpecialTypeLinePlaceholder.LINE_OF_OBJECT_PREFIX.value,
     predicate=lambda line: "()" in line,
 )
 
@@ -41,7 +41,7 @@ def enum_line_prediction(line: str) -> bool:
 
 
 enum_type = SpecialType(
-    placeholder=SpecialTypeLinePlaceholder.LINE_OF_ENUM_PREFIX,
+    placeholder=SpecialTypeLinePlaceholder.LINE_OF_ENUM_PREFIX.value,
     predicate=enum_line_prediction,
 )
 
@@ -59,8 +59,10 @@ def replace_one_quote_dict_to_json(string: str) -> str:
 
 
 def build_special_type_string_line(
-    placeholder: SpecialTypeLinePlaceholder, line_number: int
+    placeholder: str, line_number: int
 ) -> str:
+    if placeholder not in [stlp.value for stlp in SpecialTypeLinePlaceholder]:
+        raise ValueError("Invalid placeholder string")
     return placeholder + PLACEHOLDER_LINE_NUMBER_SEP + str(line_number)
 
 
@@ -130,7 +132,7 @@ class SpecialTypeLineReplacer(StringProcessor):
                 ] = [v.strip('"') for v in list_of_values]
                 self.response_syntax_string = self.response_syntax_string.replace(
                     part_of_value,
-                    f'"{SpecialTypeLinePlaceholder.LINE_OF_ENUM_PREFIX}_{line_numbers[numbers_idx]}"',
+                    f'"{SpecialTypeLinePlaceholder.LINE_OF_ENUM_PREFIX.value}_{line_numbers[numbers_idx]}"',
                     1,
                 )
                 numbers_idx += 1
@@ -160,34 +162,6 @@ class SpecialTypeLineReplacer(StringProcessor):
     @property
     def processed_string(self) -> str:
         return self.response_syntax_string
-
-
-# def generate_enum_dicts(string: str, line_numbers_of_enums: set[int]) -> list[tuple]:
-#     lines = string.split("\n")
-#     enums_dicts = list()
-#     for i, l in enumerate(lines):
-#         if i in line_numbers_of_enums:
-#             line_of_enum_split = l.strip(",").split(": ")
-#             if len(line_of_enum_split) == 2:
-#                 part_of_value = line_of_enum_split[1]
-#                 part_of_key = line_of_enum_split[0].strip(" ").strip('"')
-#             elif len(line_of_enum_split) == 1 and lines[i - 1].endswith("["):
-#                 part_of_value = line_of_enum_split[0]
-#                 matches = re.findall(r'"(.*?)"', lines[i - 1])
-#                 assert len(matches) == 1
-#                 part_of_key = matches[0]
-#             else:
-#                 raise Exception("Unexpected length of enum")
-#             enum_values = part_of_value.split("|")
-#             dict_ = dict()
-#             for enum_value in enum_values:
-#                 dict_[
-#                     enum_value.upper()
-#                     .replace("-", PLACEHOLDER_LINE_NUMBER_SEP)
-#                     .strip('"')
-#                 ] = enum_value
-#             enums_dicts.append((part_of_key, dict_))
-#     return enums_dicts
 
 
 class StringFormatter(StringProcessor):
@@ -230,15 +204,15 @@ def preprocess_input(response_syntax_string: str) -> PreprocessedData:
     )
     string_replacer.replace_line_of_item(
         special_type_lines[SpecialTypesNames.BOOLEAN],
-        SpecialTypeLinePlaceholder.LINE_OF_BOOLEAN_PREFIX,
+        SpecialTypeLinePlaceholder.LINE_OF_BOOLEAN_PREFIX.value,
     )
     string_replacer.replace_line_of_item(
         special_type_lines[SpecialTypesNames.DATETIME],
-        SpecialTypeLinePlaceholder.LINE_OF_DATETIME_PREFIX,
+        SpecialTypeLinePlaceholder.LINE_OF_DATETIME_PREFIX.value,
     )
     string_replacer.replace_line_of_item(
         special_type_lines[SpecialTypesNames.OBJECT],
-        SpecialTypeLinePlaceholder.LINE_OF_OBJECT_PREFIX,
+        SpecialTypeLinePlaceholder.LINE_OF_OBJECT_PREFIX.value,
     )
 
     string_formatter = StringFormatter(string_replacer.processed_string)

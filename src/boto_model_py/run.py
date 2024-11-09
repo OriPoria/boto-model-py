@@ -4,12 +4,8 @@ from typing import Optional
 from dataclasses import dataclass
 
 from boto_model_py.enum_writer import enum_classes_to_replace
-from boto_model_py.output_file import create_output_file, OutputFileSpec
-from boto_model_py.preprocessor import (
-    preprocess_input,
-    PreprocessedData,
-    PreprocessException,
-)
+from boto_model_py.output_file import create_output_file
+from boto_model_py.preprocessor import preprocess_input
 from boto_model_py.temporary_file import create_temporary_file
 
 from boto_model_py.ast_processor import convert_ast_object, handle_object_imports, append_response_metadata_class
@@ -47,6 +43,7 @@ def run_transformation(
         return RunTransformationSummary(
             file_path=file_path, file_name=boto_response_syntax_file_name, status=RunTransformationStatus.FAIL, message=str(exp)
         )
+
     enum_classes_ast, enum_class_names = enum_classes_to_replace(
         preprocessed_data.preprocessed_json,
         preprocessed_data.key_line_enum,

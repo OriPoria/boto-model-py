@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "boto-model-py"
-version = "0.0.7"
+version = "0.0.10"
 description = "A code generation library that converts AWS boto3 responses into a Python module with fully hierarchical Python data classes"
 readme = "README.md"
 requires-python = ">=3.9"
@@ -13,11 +13,11 @@ classifiers = [
     "Operating System :: OS Independent",
 ]
 dependencies = [
-    'pydantic==2.7.4',
-    'astor==0.8.1',
-    'datamodel-code-generator==0.25.7'
+    "pydantic==2.7.4",
+    "astor==0.8.1",
+    "datamodel-code-generator==0.25.7"
 ]
-license = { text = "MIT" }  # License should go here, not under scripts
+license = { text = "MIT" }
 
 
 [tool.hatch.build]

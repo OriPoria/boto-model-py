@@ -1,5 +1,6 @@
 import os
 import subprocess
+from pathlib import Path
 from dataclasses import dataclass
 
 
@@ -11,7 +12,7 @@ class OutputFileSpec:
 
 
 def create_output_file(
-    output_path: str, boto_response_syntax_file_name: str, preprocessed_file_path: str
+    output_path: str, boto_response_syntax_file_name: str, preprocessed_file_path: Path
 ) -> OutputFileSpec:
 
     module_path = os.path.join(

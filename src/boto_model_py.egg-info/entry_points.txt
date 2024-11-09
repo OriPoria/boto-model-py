@@ -1,0 +1,2 @@
+[console_scripts]
+bmpy = boto_model_py.cli:main
