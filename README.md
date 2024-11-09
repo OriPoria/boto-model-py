@@ -63,7 +63,8 @@ bmpy input response
 ```
 5. The response module is under generated under the `output_path` folder, with the with a class called `ListBucketsResponse`. 
 You can import it in the project, and load the response into the base class. Then using all pydantic base class feature is easy.
-[Expected output](tests/unit_tests/files/expected_list_buckets_response.txt) 
+
+[Expected output](tests/unit_tests/files/expected_list_buckets_response.py) 
 ```python
 import boto3
 
