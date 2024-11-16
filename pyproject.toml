@@ -4,13 +4,16 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "boto-model-py"
-version = "0.1.1"
+version = "0.1.2"
 description = "A code generation library that converts AWS boto3 responses into a Python module with fully hierarchical Python data classes"
 readme = "README.md"
 requires-python = ">=3.9"
 classifiers = [
     "Programming Language :: Python :: 3",
     "Operating System :: OS Independent",
+]
+authors = [
+    { name = "Ori Poria", email = "oriporia@gmail.com" }
 ]
 dependencies = [
     "pydantic < 3",
